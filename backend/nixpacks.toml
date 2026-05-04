@@ -1,8 +1,14 @@
 [phases.setup]
-nixPkgs = ['nodejs', 'python3', 'python3Packages.pip', 'stdenv.cc.cc.lib', 'zlib']
+nixPkgs = [
+    'nodejs', 
+    'python3', 
+    'python3Packages.pandas', 
+    'python3Packages.scikit-learn', 
+    'python3Packages.joblib'
+]
 
 [phases.install]
-cmds = ['npm install', 'pip install -r requirements.txt --break-system-packages']
+cmds = ['npm install']
 
 [phases.start]
 cmd = 'node server.js'
