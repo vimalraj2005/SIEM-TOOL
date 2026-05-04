@@ -4,6 +4,7 @@ const { exec } = require('child_process');
 const SERVER_URL = 'https://api.vimalrajs.in/api/logs/ingest'; 
 
 function fetchAndSendLogs() {
+    console.log("⏳ Querying Windows Security logs...");
     // Fetches the latest 5 failed login attempts (Event ID 4625)
     const psCommand = `powershell -Command "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} -MaxEvents 5 -ErrorAction SilentlyContinue | Select-Object TimeCreated, Id, Message | ConvertTo-Json"`;
 
@@ -31,3 +32,6 @@ function fetchAndSendLogs() {
 
 // Execute the function
 fetchAndSendLogs();
+
+setInterval(fetchAndSendLogs, 10000);
+console.log("🚀 Windows SIEM Agent Started! Scanning for failed logins every 10 seconds...");

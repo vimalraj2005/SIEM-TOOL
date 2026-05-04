@@ -18,20 +18,34 @@ app.use(express.json());
 
 app.post('/api/logs/ingest', (req, res) => {
     const logData = req.body;
+    let responseSent = false; // Prevent sending multiple responses
     
-    // Pass data to Python AI Engine
-// Change this line
-const pythonProcess = spawn('python3', ['ai_engine.py', JSON.stringify(logData)]);
+    const pythonProcess = spawn('python3', ['ai_engine.py', JSON.stringify(logData)]);
+
+    // Handle Success
     pythonProcess.stdout.on('data', (data) => {
         try {
             const aiResult = JSON.parse(data.toString());
-            
-            // PUSH the result instantly to the React Dashboard
             io.emit('threat_alert', aiResult); 
-
-            res.status(200).json({ message: 'Analysis complete' });
+            if (!responseSent) {
+                res.status(200).json({ message: 'Analysis complete' });
+                responseSent = true;
+            }
         } catch (err) {
-            console.error('Error parsing AI response:', err);
+            console.error('Error parsing AI:', err);
+        }
+    });
+
+    // Handle Errors (CRITICAL FIX)
+    pythonProcess.stderr.on('data', (data) => {
+        console.error(`AI Engine Error: ${data.toString()}`);
+    });
+
+    // Handle Process Exit
+    pythonProcess.on('close', (code) => {
+        if (code !== 0 && !responseSent) {
+            res.status(500).json({ error: 'AI Engine crashed during analysis' });
+            responseSent = true;
         }
     });
 });
