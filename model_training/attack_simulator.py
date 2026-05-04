@@ -34,7 +34,7 @@ print("\n[!] 🚀 FIRING DDOS PAYLOAD AT SIEM BACKEND (localhost:3000)...")
 
 try:
     # Fire the packet at your Node.js ingestion API
-    response = requests.post('https://api.vimalrajs.in/api/logs/ingest', json=payload, timeout=10)
+    response = requests.post('https://api.vimalrajs.in/api/logs/ingest', json=payload, timeout=30)
     print(f"[+] Direct Hit! Server responded with status code: {response.status_code}")
 except Exception as e:
     print(f"[-] Connection failed. Is your Node.js backend running? Error: {e}")
