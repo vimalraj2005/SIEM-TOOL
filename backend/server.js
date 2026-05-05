@@ -5,7 +5,7 @@ const { Server } = require('socket.io'); // Added
 const { spawn } = require('child_process');
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 
 // Setup HTTP server and WebSockets
 const server = http.createServer(app);

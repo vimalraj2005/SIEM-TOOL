@@ -23,7 +23,7 @@ RUN pip3 install -r requirements.txt --break-system-packages
 COPY . .
 
 # Expose the port
-EXPOSE 3000
+EXPOSE 3001
 
 # Start the server
 CMD ["node", "server.js"]
