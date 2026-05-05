@@ -20,9 +20,7 @@ app.post('/api/logs/ingest', (req, res) => {
     const logData = req.body;
     let responseSent = false; // Prevent sending multiple responses
     
-    const pythonProcess = spawn('python3', ['ai_engine.py', JSON.stringify(logData)]);
-
-    // Handle Success
+    const pythonProcess = spawn('/app/venv/bin/python3', ['ai_engine.py', JSON.stringify(logData)]);
     pythonProcess.stdout.on('data', (data) => {
         try {
             const aiResult = JSON.parse(data.toString());
