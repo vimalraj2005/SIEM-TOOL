@@ -16,6 +16,10 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 
+app.get('/health', (req, res) => {
+    res.status(200).send("HELLO! THE ROUTER IS FINALLY WORKING!");
+});
+
 app.post('/api/logs/ingest', (req, res) => {
     const logData = req.body;
     let responseSent = false; // Prevent sending multiple responses
